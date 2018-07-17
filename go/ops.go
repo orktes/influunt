@@ -2,7 +2,7 @@ package influunt
 
 // Add operations adds two nodes together (a + b)
 func Add(g *Graph, a, b Node) Node {
-	return g.AddOperation(&OpSpec{
+	return g.AddOperation(OpSpec{
 		Type:   "Add",
 		Inputs: []Node{a, b},
 	}).Output(0)
@@ -10,7 +10,7 @@ func Add(g *Graph, a, b Node) Node {
 
 // Placeholder returns a new placeholder node
 func Placeholder(g *Graph) Node {
-	return g.AddOperation(&OpSpec{
+	return g.AddOperation(OpSpec{
 		Type: "Placeholder",
 	}).Output(0)
 }
@@ -26,7 +26,7 @@ func Map(g *Graph, list Node, fn func(item Node, index Node) Node) Node {
 		g.Operations[i].Cache = false
 	}
 
-	return g.AddOperation(&OpSpec{
+	return g.AddOperation(OpSpec{
 		Type:   "Map",
 		Inputs: []Node{list, fnRes},
 		Attrs: map[string]interface{}{
@@ -39,7 +39,7 @@ func Map(g *Graph, list Node, fn func(item Node, index Node) Node) Node {
 
 // ParseJSON parses json
 func ParseJSON(g *Graph, json Node) Node {
-	return g.AddOperation(&OpSpec{
+	return g.AddOperation(OpSpec{
 		Type:   "ParseJSON",
 		Inputs: []Node{json},
 	}).Output(0)
@@ -47,7 +47,7 @@ func ParseJSON(g *Graph, json Node) Node {
 
 // GetAttr returns an attribute from an object or map
 func GetAttr(g *Graph, m Node, key Node) Node {
-	return g.AddOperation(&OpSpec{
+	return g.AddOperation(OpSpec{
 		Type:   "GetAttr",
 		Inputs: []Node{m, key},
 	}).Output(0)
@@ -55,7 +55,7 @@ func GetAttr(g *Graph, m Node, key Node) Node {
 
 // Cond returs a if pred is "true" and b if pred is "false"
 func Cond(g *Graph, pred Node, a, b func() Node) Node {
-	return g.AddOperation(&OpSpec{
+	return g.AddOperation(OpSpec{
 		Type:   "Cond",
 		Inputs: []Node{pred, a(), b()},
 	}).Output(0)
@@ -63,7 +63,7 @@ func Cond(g *Graph, pred Node, a, b func() Node) Node {
 
 // Const returns a constant value node
 func Const(g *Graph, val interface{}) Node {
-	return g.AddOperation(&OpSpec{
+	return g.AddOperation(OpSpec{
 		Type: "Const",
 		Attrs: map[string]interface{}{
 			"value": val,

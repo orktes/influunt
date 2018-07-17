@@ -11,7 +11,7 @@ func NewGraph() *Graph {
 }
 
 // AddOperation adds a new operation to graph
-func (g *Graph) AddOperation(spec *OpSpec) *Operation {
+func (g *Graph) AddOperation(spec OpSpec) *Operation {
 	i := len(g.Operations)
 	op := &Operation{
 		OpIndex: i,

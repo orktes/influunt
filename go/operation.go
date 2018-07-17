@@ -4,7 +4,7 @@ package influunt
 type Operation struct {
 	OpIndex int
 	Cache   bool
-	Spec    *OpSpec
+	Spec    OpSpec
 }
 
 // Output returns an output node for a given index
