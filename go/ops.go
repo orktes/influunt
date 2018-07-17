@@ -48,8 +48,7 @@ func Cond(g *Graph, pred Node, a, b func() Node) Node {
 // Const returns a constant value node
 func Const(g *Graph, val interface{}) Node {
 	return g.AddOperation(&OpSpec{
-		Type:   "Const",
-		Inputs: nil,
+		Type: "Const",
 		Attrs: map[string]interface{}{
 			"value": val,
 		},
