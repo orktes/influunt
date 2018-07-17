@@ -37,3 +37,23 @@ func TestMap(t *testing.T) {
 	}
 
 }
+
+func BenchmarkMap(b *testing.B) {
+	graph := influunt.NewGraph()
+	list := influunt.Const(graph, []int{1, 2, 3})
+	res := influunt.Map(graph, list, func(item influunt.Node, index influunt.Node) influunt.Node {
+		return influunt.Add(graph, item, influunt.Const(graph, 1))
+	})
+
+	executor, err := executor.NewExecutor(graph)
+	if err != nil {
+		b.Fatal(err)
+	}
+	outputs := []influunt.Node{res}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		executor.Run(nil, outputs)
+	}
+}

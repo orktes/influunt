@@ -37,6 +37,22 @@ func Map(g *Graph, list Node, fn func(item Node, index Node) Node) Node {
 
 }
 
+// ParseJSON parses json
+func ParseJSON(g *Graph, json Node) Node {
+	return g.AddOperation(&OpSpec{
+		Type:   "ParseJSON",
+		Inputs: []Node{json},
+	}).Output(0)
+}
+
+// GetAttr returns an attribute from an object or map
+func GetAttr(g *Graph, m Node, key Node) Node {
+	return g.AddOperation(&OpSpec{
+		Type:   "GetAttr",
+		Inputs: []Node{m, key},
+	}).Output(0)
+}
+
 // Cond returs a if pred is "true" and b if pred is "false"
 func Cond(g *Graph, pred Node, a, b func() Node) Node {
 	return g.AddOperation(&OpSpec{

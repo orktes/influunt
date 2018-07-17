@@ -52,6 +52,9 @@ func (e *Executor) executeOp(context *Context, n influunt.Node) (interface{}, er
 
 	context.node = n
 	val, err = opFunc(context, e, spec.Inputs, spec.Attrs)
+	if err != nil {
+		return nil, err
+	}
 
 	if operation.Cache {
 		vals[id[0]] = val
