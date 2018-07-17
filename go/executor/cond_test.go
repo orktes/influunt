@@ -13,8 +13,8 @@ func TestCond(t *testing.T) {
 	aNode := influunt.Add(graph, influunt.Const(graph, 1), influunt.Const(graph, 2))
 	bNode := influunt.Add(graph, aNode, aNode)
 
-	resultNode := influunt.Cond(graph, influunt.Const(graph, true), aNode, bNode)
-	result2Node := influunt.Cond(graph, influunt.Const(graph, false), aNode, bNode)
+	resultNode := influunt.Cond(graph, influunt.Const(graph, true), func() influunt.Node { return aNode }, func() influunt.Node { return bNode })
+	result2Node := influunt.Cond(graph, influunt.Const(graph, false), func() influunt.Node { return aNode }, func() influunt.Node { return bNode })
 
 	executor, err := executor.NewExecutor(graph)
 	if err != nil {

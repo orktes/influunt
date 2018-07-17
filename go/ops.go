@@ -38,10 +38,10 @@ func Map(g *Graph, list Node, fn func(item Node, index Node) Node) Node {
 }
 
 // Cond returs a if pred is "true" and b if pred is "false"
-func Cond(g *Graph, pred, a, b Node) Node {
+func Cond(g *Graph, pred Node, a, b func() Node) Node {
 	return g.AddOperation(&OpSpec{
 		Type:   "Cond",
-		Inputs: []Node{pred, a, b},
+		Inputs: []Node{pred, a(), b()},
 	}).Output(0)
 }
 
