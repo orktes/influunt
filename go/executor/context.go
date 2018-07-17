@@ -20,15 +20,15 @@ func (c *Context) SubContext(inputs map[influunt.Node]interface{}) *Context {
 }
 
 // GetInput returns an input argument from context
-func (c *Context) GetInput(node influunt.Node) interface{} {
+func (c *Context) GetInput(node influunt.Node) (interface{}, bool) {
 	if c.inputs != nil {
 		val, ok := c.inputs[node]
 		if !ok && c.parentContext != nil {
 			return c.parentContext.GetInput(node)
 		}
 
-		return val
+		return val, true
 	}
 
-	return nil
+	return nil, false
 }
