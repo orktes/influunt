@@ -9,21 +9,21 @@ import (
 
 func TestParseJSON(t *testing.T) {
 	graph := influunt.NewGraph()
-	jsonNode := influunt.ParseJSON(graph, influunt.Const(graph, `{"foo":123}`))
+	json := influunt.Const(graph, `{"foo":123}`)
+	jsonNode := influunt.ParseJSON(graph, json)
+	attNode := influunt.GetAttr(graph, jsonNode, influunt.Const(graph, "foo"))
 
 	executor, err := executor.NewExecutor(graph)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	result, err := executor.Run(nil, []influunt.Node{jsonNode})
+	result, err := executor.Run(nil, []influunt.Node{attNode})
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	m := result[0].(map[string]interface{})
-
-	if m["foo"] != float64(123) {
-		t.Errorf("Wrong result returned %+v", m["foo"])
+	if result[0] != float64(123) {
+		t.Errorf("Wrong result returned %+v", attNode)
 	}
 }
