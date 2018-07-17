@@ -5,15 +5,11 @@ import (
 
 	"github.com/orktes/influunt/go"
 	"github.com/orktes/influunt/go/executor"
-
-	"github.com/davecgh/go-spew/spew"
 )
 
 func TestParseJSON(t *testing.T) {
 	graph := influunt.NewGraph()
 	jsonNode := influunt.ParseJSON(graph, influunt.Const(graph, `{"foo":123}`))
-
-	spew.Dump(graph)
 
 	executor, err := executor.NewExecutor(graph)
 	if err != nil {
