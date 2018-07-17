@@ -27,3 +27,22 @@ func TestParseJSON(t *testing.T) {
 		t.Errorf("Wrong result returned %+v", attNode)
 	}
 }
+
+func BenchmarkParseJSON(b *testing.B) {
+	graph := influunt.NewGraph()
+	json := influunt.Const(graph, `{"foo":123}`)
+	jsonNode := influunt.ParseJSON(graph, json)
+	attNode := influunt.GetAttr(graph, jsonNode, influunt.Const(graph, "foo"))
+
+	executor, err := executor.NewExecutor(graph)
+	if err != nil {
+		b.Fatal(err)
+	}
+	outputs := []influunt.Node{attNode}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		executor.Run(nil, outputs)
+	}
+}
