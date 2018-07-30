@@ -9,7 +9,7 @@ RUN apt-get update && \
   rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN  wget -qO- https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz \
-    | tar -C /usr/local -xvz && \
+    | tar -C /usr/local -xz && \
     export PATH="/usr/local/go/bin:$PATH" && \
     go version; 
 
