@@ -32,5 +32,5 @@ notFoo = influunt_core.op_cond(graph, falseVal, foo, biz)
 executor = influunt_core.new_executor(graph)
 res = influunt_core.executor_run(executor, {a: 123}, [b, c, manualOpRes, randomListMap, trueVal, falseVal, json, m, isFoo, notFoo])
 
-assert res == [321, 444, 567, [1, 3, 5], False, True, '{"foo": "bar", "biz": "foo"}', {'biz': 'foo', 'foo': 'bar'}, 'foo', 'bar']
+assert res == [321, 444, 567, [1, 3, 5], True, False, '{"foo": "bar", "biz": "foo"}', {'biz': 'foo', 'foo': 'bar'}, 'bar', 'foo']
 print(res)

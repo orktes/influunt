@@ -20,7 +20,7 @@ package main
 //
 // int influunt_isPyBoolTrue(PyObject *o)
 // {
-//		return o == Py_False ? 1 : 0;
+//		return o == Py_True ? 1 : 0;
 // }
 //
 // int influunt_isPyLong(PyObject *o)
@@ -92,6 +92,10 @@ func pyRelease(pyObject *C.PyObject) {
 }
 
 func convertGoTypeToPyObject(val interface{}) (*C.PyObject, error) {
+	if val == nil {
+		return C.Py_None, nil
+	}
+
 	switch val := val.(type) {
 	case reflect.Value:
 		return convertGoTypeToPyObject(val.Interface())
