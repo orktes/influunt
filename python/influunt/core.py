@@ -3,8 +3,11 @@ import influunt_core
 from .executor import Executor
 
 class Graph:
-    def __init__(self):
-        self._graph = influunt_core.new_graph()
+    def __init__(self, graph=None):
+        if graph is None:
+            graph = influunt_core.new_graph()
+
+        self._graph = graph
 
     default_graph = None
 
@@ -16,6 +19,13 @@ class Graph:
     def __exit__(self, *args):
         assert self.default_graph is self
         Graph.default_graph = None
+
+    def node_by_name(self, name, index=0):
+        node = influunt_core.graph_node_by_name(self._graph, name, index)
+        if node is None:
+            return None
+
+        return Node(node)
 
     def add_op(self, spec):
         nodes = influunt_core.graph_add_op(self._graph, spec)
@@ -29,10 +39,13 @@ class Graph:
     def executor(self):
         return Executor(self)
 
-
 class Node:
     def __init__(self, node):
         self._node = node
+        self._name = influunt_core.node_get_name(node)
+
+    def __repr__(self):
+        return 'Node(name=%s)' % (self._name)
 
     def __add__(self, anotherNode):
         return add(self, anotherNode)
@@ -45,9 +58,18 @@ class Node:
 
     def __getattr__(self, attr):
         return get_attr(self, attr)
+        
+    def get_attr(self, key):
+        return get_attr(self, attr)
 
     def map(self, fn):
         return map(self, fn)
+
+def load_graph(filepath):
+    return Graph(influunt_core.read_graph_from_file(filepath))
+
+def save_graph(graph, filepath):
+    return influunt_core.write_graph_to_file(graph._graph, filepath)
 
 def map(list, fn, graph=None):
     if graph is None:
