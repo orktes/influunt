@@ -48,6 +48,11 @@ package main
 // 		return PyList_Check(o);
 // }
 //
+// int influunt_isPyCapsule(PyObject *o)
+// {
+// 		return PyCapsule_CheckExact(o);
+// }
+//
 // char* influunt_stringFromPyUnicode(PyObject *o)
 // {
 // 		return PyUnicode_AsUTF8AndSize(o, NULL);
@@ -69,6 +74,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"unsafe"
 )
 
 type pyObject = C.PyObject
@@ -150,6 +156,8 @@ func convertGoTypeToPyObject(val interface{}) (*C.PyObject, error) {
 		}
 
 		return list, nil
+	case unsafe.Pointer:
+		return pointerToCapsule(val), nil
 	default:
 		typ := reflect.TypeOf(val)
 		switch typ.Kind() {
@@ -212,6 +220,8 @@ func convertPyObjectToInterface(pyObject *C.PyObject) (interface{}, error) {
 		return float64(double), nil
 	} else if int(C.influunt_isPyUnicode(pyObject)) == 1 {
 		return C.GoString(C.influunt_stringFromPyUnicode(pyObject)), nil
+	} else if int(C.influunt_isPyCapsule(pyObject)) == 1 {
+		return capsuleToPointer(pyObject), nil
 	} else if int(C.influunt_isPyList(pyObject)) == 1 {
 		length := int(C.PyList_Size(pyObject))
 		if length == 0 {
@@ -261,6 +271,7 @@ func convertPyObjectToInterface(pyObject *C.PyObject) (interface{}, error) {
 				return nil, errors.New("only string based keys are supported currently")
 			}
 		}
+		return m, nil
 	}
 	return nil, errors.New("python type not supported")
 }

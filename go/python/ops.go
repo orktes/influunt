@@ -5,6 +5,8 @@ package main
 import "C"
 import (
 	"github.com/orktes/influunt/go"
+	"errors"
+	"unsafe"
 )
 
 // influunt_OpAdd operations adds two nodes together (a + b)
@@ -97,4 +99,64 @@ func influunt_OpCond(self, args *pyObject) *pyObject {
 			}).Output(0),
 		),
 	)
+}
+
+// influunt_GraphAddOp adds a new operation to the graph based on the given job spec
+//export influunt_GraphAddOp
+func influunt_GraphAddOp(self, args *pyObject) *pyObject {
+	graphCapsule, spec := parse2ObjectFromArgs(args)
+	graph := graphFromPointer(capsuleToPointer(graphCapsule))
+	specMapInterface, err := convertPyObjectToInterface(spec)
+	if err != nil {
+		panic(err)
+	}
+
+	specMap, ok := specMapInterface.(map[string]interface{})
+	if !ok {
+		panic(errors.New("OpSpec is not a dict"))
+	}
+
+	opSpec := influunt.OpSpec{}
+	resLength := 1
+
+	if typ, ok := specMap["type"]; ok {
+		if typ, ok := typ.(string); ok {
+			opSpec.Type = typ
+		}
+	}
+
+	if attrs, ok := specMap["attrs"]; ok {
+		if attrs, ok := attrs.(map[string]interface{}); ok {
+			opSpec.Attrs = attrs
+		}
+	}
+
+	if inputs, ok := specMap["inputs"]; ok {
+		if inputs, ok := inputs.([]unsafe.Pointer); ok {
+			for _, ptr := range inputs {
+				opSpec.Inputs = append(opSpec.Inputs, nodeFromPointer(ptr))
+			}
+			
+		}
+	}
+
+	if results, ok := specMap["results"]; ok {
+		if results, ok := results.(int); ok {
+			resLength = results
+		}
+	}
+
+	op := graph.AddOperation(opSpec)
+
+	nodes := make([]unsafe.Pointer, resLength)
+	for i := 0; i < resLength; i++ {
+		nodes[i] = nodeToPointer(op.Output(i))
+	}
+
+	pyRes, err := convertGoTypeToPyObject(nodes)
+	if err != nil {
+		panic(err)
+	}
+	
+	return pyRes
 }

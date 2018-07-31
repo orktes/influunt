@@ -2,6 +2,7 @@
 #include <Python.h>
 
 PyObject* influunt_NewGraph(PyObject* p0, PyObject* p1);
+PyObject* influunt_GraphAddOp(PyObject* p0, PyObject* p1);
 
 PyObject* influunt_OpAdd(PyObject* p0, PyObject* p1);
 PyObject* influunt_OpConst(PyObject* p0, PyObject* p1);
@@ -16,6 +17,7 @@ PyObject* influunt_ExecutorRun(PyObject* p0, PyObject* p1);
 
 static PyMethodDef InfluuntMethods[] = {
     {"new_graph", influunt_NewGraph, METH_NOARGS, "Creates a new graph."},
+    {"graph_add_op", influunt_GraphAddOp, METH_VARARGS, "Add operation to graph."},
     {"new_executor", influunt_NewExecutor, METH_O, "Creates a new executor for a given graph."},
     {"executor_run", influunt_ExecutorRun, METH_VARARGS, "Execute contained graph with given input map and output filter"},
     {"op_add", influunt_OpAdd, METH_VARARGS, "Create an add operation between two nodes."},
