@@ -43,17 +43,17 @@ func main() {
 	file, _ := os.Open("example.graph")
 	graph, _ := influunt.ReadGraph(file)
 
-	input := graph.NodeByName("Placeholder:0", 0)
-	names := graph.NodeByName("Map:12", 0)
-	values := graph.NodeByName("Map:7", 0)
+	input, _ := graph.NodeByName("Placeholder:0", 0)
+	names, _ := graph.NodeByName("Map:12", 0)
+	values, _ := graph.NodeByName("Map:7", 0)
 
 	exec, _ := executor.NewExecutor(graph)
 	results, _ := exec.Run(map[influunt.Node]interface{}{
-		*input: []map[string]interface{}{
+		input: []map[string]interface{}{
 			{"name": "foo", "value": 100},
 			{"name": "bar", "value": 200},
 		},
-	}, []influunt.Node{*names, *values})
+	}, []influunt.Node{names, values})
 
 	fmt.Printf("%+v\n", results)
 	// [[foo bar] [101 201]]

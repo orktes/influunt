@@ -30,15 +30,15 @@ func WriteGraph(g *Graph, w io.Writer) error {
 }
 
 // NodeByName returns node for a given name
-func (g *Graph) NodeByName(name string, index int) *Node {
+func (g *Graph) NodeByName(name string, index int) (Node, bool) {
 	for _, op := range g.Operations {
 		if op.Spec.Name == name {
 			n := op.Output(index)
-			return &n
+			return n, true
 		}
 	}
 
-	return nil
+	return Node{}, false
 }
 
 // AddOperation adds a new operation to graph

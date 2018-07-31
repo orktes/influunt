@@ -43,12 +43,12 @@ func influunt_GraphNodeByName(self *pyObject, args *pyObject) *pyObject {
 		panic(errors.New("index should be an int"))
 	}
 
-	node := graph.NodeByName(nameString, indexInt)
-	if node == nil {
+	node, ok := graph.NodeByName(nameString, indexInt)
+	if !ok {
 		return C.Py_None
 	}
 
-	return pointerToCapsule(nodeToPointer(*node))
+	return pointerToCapsule(nodeToPointer(node))
 }
 
 // influunt_ReadGraphFromFile loads graph for a given filepath
