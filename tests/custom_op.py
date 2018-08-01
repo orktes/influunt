@@ -7,7 +7,7 @@ sys.path.append(join(dirname(__file__), "../python"))
 
 import influunt
 
-randint = influunt.add_operation("randint", random.randint)
+randint = influunt.add_operation("random/randint", random.randint)
 
 with influunt.Graph() as graph:
     start = influunt.placeholder()
