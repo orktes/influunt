@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package influunt;
+
+option go_package = "github.com/orktes/influunt/go/types";
+
+message Node {
+    int64 id = 1;
+    int64 offset = 2;
+}

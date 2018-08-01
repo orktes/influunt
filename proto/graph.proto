@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package influunt;
+
+option go_package = "github.com/orktes/influunt/go/types";
+
+import "operation.proto";
+
+message Graph {
+  repeated Operation operations = 1;
+}

@@ -1,0 +1,24 @@
+syntax = "proto3";
+package influunt;
+
+option go_package = "github.com/orktes/influunt/go/types";
+
+import "node.proto";
+import "google/protobuf/any.proto";
+
+message Attribute {
+    
+}
+
+message OpSpec {
+    string type = 1;
+	string name = 2;
+	repeated Node inputs = 3;
+	map<string, google.protobuf.Any> attrs = 4;
+}
+
+message Operation {
+    int64 op_index = 1;
+	bool cache  = 2;
+	OpSpec spec = 3;
+}
