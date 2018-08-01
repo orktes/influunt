@@ -15,7 +15,7 @@ with influunt.Graph() as graph:
 
     randomNumber = randint(start, end)
 
-    r = graph.executor().run({start: 1, end: 100}, [randomNumber])
+    (r,) = graph.executor().run({start: 1, end: 100}, [randomNumber])
  
     print(r)
-    assert r[0] >= 1 and r[0] <= 100
+    assert r >= 1 and r <= 100

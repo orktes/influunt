@@ -13,4 +13,4 @@ with influunt.Graph() as graph:
 
     r = graph.executor().run({}, [biz, fooboo])
     print(r)
-    assert r == ["biz", ['foobiz', 'barbiz']]
+    assert r == ("biz", ['foobiz', 'barbiz'])

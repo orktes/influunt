@@ -24,6 +24,6 @@ with influunt.Graph() as graph:
     r = graph.executor().run({p: 1}, [n, mapped, foo, bar, compare, compare2, greaterThan, equal])
  
     print(r)
-    assert r == [6, [2, 4, 6], "foo", "bar", True, True, False, True]
+    assert r == (6, [2, 4, 6], "foo", "bar", True, True, False, True)
     
 

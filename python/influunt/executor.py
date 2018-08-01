@@ -15,4 +15,4 @@ class Executor:
         for node in outputs:
             outputNodes.append(node._node)
 
-        return influunt_core.executor_run(self._executor, inputNodes, outputNodes)
+        return tuple(influunt_core.executor_run(self._executor, inputNodes, outputNodes))
