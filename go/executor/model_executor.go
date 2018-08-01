@@ -5,6 +5,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// ErrMissingInput is returned if given input map is missing inputs
 var ErrMissingInput = errors.New("missing input variable")
 
 // ModelExecutor is used to execute models (graph + signature)
