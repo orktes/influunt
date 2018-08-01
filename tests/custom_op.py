@@ -10,9 +10,12 @@ import influunt
 randint = influunt.add_operation("randint", random.randint)
 
 with influunt.Graph() as graph:
-    randomNumber = randint(1, 100)
+    start = influunt.placeholder()
+    end = influunt.placeholder()
 
-    r = graph.executor().run({}, [randomNumber])
+    randomNumber = randint(start, end)
+
+    r = graph.executor().run({start: 1, end: 100}, [randomNumber])
  
     print(r)
     assert r[0] >= 1 and r[0] <= 100
