@@ -14,7 +14,7 @@ go-generate:
 .PHONY: go-generate
 
 test-go:
-	go test ./...
+	./scripts/test.sh
 .PHONY: test-go
 
 test-e2e:
