@@ -14,6 +14,7 @@ PyObject* influunt_OpMap(PyObject* p0, PyObject* p1);
 
 PyObject* influunt_NewExecutor(PyObject* p0, PyObject* p1);
 PyObject* influunt_ExecutorRun(PyObject* p0, PyObject* p1);
+PyObject* influunt_ExecutorRunAsync(PyObject* p0, PyObject* p1);
 PyObject* influunt_ExecutorAddOperation(PyObject* p0, PyObject* p1);
 
 static PyMethodDef InfluuntMethods[] = {
@@ -25,6 +26,7 @@ static PyMethodDef InfluuntMethods[] = {
     {"node_get_name", influunt_NodeGetName, METH_O, "Return node name."},
     {"new_executor", influunt_NewExecutor, METH_O, "Creates a new executor for a given graph."},
     {"executor_run", influunt_ExecutorRun, METH_VARARGS, "Execute contained graph with given input map and output filter"},
+    {"executor_run_async", influunt_ExecutorRunAsync, METH_VARARGS, "Asynchronously execute contained graph with given input map and output filter"},
     {"executor_add_operation", influunt_ExecutorAddOperation, METH_VARARGS, "Add new operation to executor"},
     {"op_map", influunt_OpMap, METH_VARARGS, "Maps over a given list."},
     {NULL, NULL, 0, NULL}

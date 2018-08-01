@@ -64,6 +64,7 @@ func influunt_ExecutorAddOperation(self, args *pyObject) *C.PyObject {
 		return []interface{}{resGoVal}, nil
 	})
 
+	pyRetain(C.Py_None)
 	return C.Py_None
 }
 
@@ -94,6 +95,53 @@ func influunt_ExecutorRun(self, args *pyObject) *C.PyObject {
 		panic(err)
 	}
 	return resPyObj
+}
+
+// influunt_ExecutorRunAsync runs executor async
+//export influunt_ExecutorRunAsync
+func influunt_ExecutorRunAsync(self, args *pyObject) *C.PyObject {
+	eCapsule, inputs, outputs, callback := parse4ObjectFromArgs(args)
+	e := capsuleToPointer(eCapsule)
+	exec := pointer.Restore(e).(*executor.Executor)
+
+	inputMap, err := convertPyDictNodeMap(inputs)
+	if err != nil {
+		panic(err)
+	}
+
+	outputArr, err := convertPyListToNodeArr(outputs)
+	if err != nil {
+		panic(err)
+	}
+	go func() {
+		responses, err := exec.Run(inputMap, outputArr)
+		if err != nil {
+			panic(err)
+		}
+
+		gstate := C.PyGILState_Ensure()
+		defer C.PyGILState_Release(gstate)
+
+		args := C.PyTuple_New(C.long(len(responses)))
+		for i, val := range responses {
+			pyVal, err := convertGoTypeToPyObject(val)
+			if err != nil {
+				panic(err)
+			}
+
+			C.PyTuple_SetItem(args, C.long(i), pyVal)
+		}
+
+		res := C.PyObject_CallObject(callback, args)
+		if res == nil {
+			// TODO handle error
+			C.PyErr_Print()
+		}
+		pyRelease(args)
+	}()
+
+	pyRetain(C.Py_None)
+	return C.Py_None
 }
 
 func convertPyListToNodeArr(list *pyObject) ([]influunt.Node, error) {

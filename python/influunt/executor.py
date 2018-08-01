@@ -16,3 +16,14 @@ class Executor:
             outputNodes.append(node._node)
 
         return tuple(influunt_core.executor_run(self._executor, inputNodes, outputNodes))
+
+    def run_async(self, inputs, outputs, callback):
+        inputNodes = {}
+        for key, value in inputs.items():
+            inputNodes[key._node] = value
+
+        outputNodes = []
+        for node in outputs:
+            outputNodes.append(node._node)
+        
+        influunt_core.executor_run_async(self._executor, inputNodes, outputNodes, callback)

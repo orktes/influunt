@@ -93,6 +93,7 @@ func pyRelease(pyObject *C.PyObject) {
 
 func convertGoTypeToPyObject(val interface{}) (*C.PyObject, error) {
 	if val == nil {
+		pyRetain(C.Py_None)
 		return C.Py_None, nil
 	}
 
