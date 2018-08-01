@@ -10,12 +10,12 @@ func getAttrOp(c *Context, e *Executor, inputs []influunt.Node, attrs map[string
 		return nil, errors.New("operation takes two arguments")
 	}
 
-	m, err := e.executeOp(c, inputs[0])
+	m, err := e.ExecuteOp(c, inputs[0])
 	if err != nil {
 		return nil, err
 	}
 
-	key, err := e.executeOp(c, inputs[1])
+	key, err := e.ExecuteOp(c, inputs[1])
 	if err != nil {
 		return nil, err
 	}

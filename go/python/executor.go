@@ -21,6 +21,52 @@ func influunt_NewExecutor(self, gCapsule *pyObject) *pyObject {
 	return pointerToCapsule(pointer.Save(executor))
 }
 
+// influunt_ExecutorAddOperation adds a new operation
+//export influunt_ExecutorAddOperation
+func influunt_ExecutorAddOperation(self, args *pyObject) *C.PyObject {
+	name, fn := parse2ObjectFromArgs(args)
+	pyRetain(fn)
+
+	nameStr, err := convertPyObjectToInterface(name)
+	if err != nil {
+		panic(err)
+	}
+
+	executor.AddOperation(nameStr.(string), func(c *executor.Context, e *executor.Executor, inputs []influunt.Node, attrs map[string]interface{}) ([]interface{}, error) {
+		args := C.PyTuple_New(C.long(len(inputs)))
+		defer pyRelease(args)
+
+		for i, input := range inputs {
+			val, err := e.ExecuteOp(c, input)
+			if err != nil {
+				return nil, err
+			}
+
+			pyVal, err := convertGoTypeToPyObject(val)
+			if err != nil {
+				return nil, err
+			}
+
+			C.PyTuple_SetItem(args, C.long(i), pyVal)
+		}
+
+		res := C.PyObject_CallObject(fn, args)
+		if res == nil {
+			// TODO return error
+			C.PyErr_Print()
+		}
+
+		resGoVal, err := convertPyObjectToInterface(res)
+		if err != nil {
+			return nil, err
+		}
+
+		return []interface{}{resGoVal}, nil
+	})
+
+	return C.Py_None
+}
+
 // influunt_ExecutorRun runs executor
 //export influunt_ExecutorRun
 func influunt_ExecutorRun(self, args *pyObject) *C.PyObject {

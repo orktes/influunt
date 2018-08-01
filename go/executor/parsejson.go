@@ -13,7 +13,7 @@ func parseJSONOp(c *Context, e *Executor, inputs []influunt.Node, attrs map[stri
 		return nil, errors.New("operation takes one argument")
 	}
 
-	str, err := e.executeOp(c, inputs[0])
+	str, err := e.ExecuteOp(c, inputs[0])
 	if err != nil {
 		return nil, err
 	}

@@ -121,7 +121,8 @@ def map(list, fn, graph=None):
         lambda item, i : fn(Node(item), Node(i))._node
     )
     return Node(node)
-    
+
+
 def generate_binary_op(type):
     def op(a, b, graph=None):
         if graph is None:
@@ -137,6 +138,25 @@ def generate_binary_op(type):
 
     return op
 
+def add_operation(name, fn):
+    influunt_core.executor_add_operation(name, fn)
+
+    def op(*args):
+        graph = Graph.default_graph
+        inputs = []
+
+        for arg in args:
+            if isinstance(arg, Graph):
+                graph = arg
+            else:
+                inputs.append(ensure_node(arg)._node)
+            
+        return graph.add_op({
+            "type": name,
+            "inputs": inputs,
+        })[0]
+
+    return op
 
 add = generate_binary_op("Add")
 sub = generate_binary_op("Sub")

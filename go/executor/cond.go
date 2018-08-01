@@ -10,16 +10,16 @@ func condOp(c *Context, e *Executor, inputs []influunt.Node, attrs map[string]in
 		return nil, errors.New("wrong number of arguments")
 	}
 
-	pred, err := e.executeOp(c, inputs[0])
+	pred, err := e.ExecuteOp(c, inputs[0])
 	if err != nil {
 		return nil, err
 	}
 
 	var res interface{}
 	if pred == true {
-		res, err = e.executeOp(c, inputs[1])
+		res, err = e.ExecuteOp(c, inputs[1])
 	} else {
-		res, err = e.executeOp(c, inputs[2])
+		res, err = e.ExecuteOp(c, inputs[2])
 	}
 
 	if err != nil {

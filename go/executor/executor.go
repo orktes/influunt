@@ -34,7 +34,8 @@ func (e *Executor) init() error {
 	return nil
 }
 
-func (e *Executor) executeOp(context *Context, n influunt.Node) (interface{}, error) {
+// ExecuteOp execute a sinle op for a node
+func (e *Executor) ExecuteOp(context *Context, n influunt.Node) (interface{}, error) {
 	id := n.ID
 
 	vals := context.vals
@@ -74,7 +75,7 @@ func (e *Executor) Run(inputs map[influunt.Node]interface{}, outputs []influunt.
 	var err error
 	results := make([]interface{}, len(outputs))
 	for i, output := range outputs {
-		results[i], err = e.executeOp(context, output)
+		results[i], err = e.ExecuteOp(context, output)
 		if err != nil {
 			return nil, err
 		}

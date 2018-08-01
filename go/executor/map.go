@@ -12,7 +12,7 @@ func mapOp(c *Context, e *Executor, inputs []influunt.Node, attrs map[string]int
 		return nil, errors.New("operation takes two arguments")
 	}
 
-	iterables, err := e.executeOp(c, inputs[0])
+	iterables, err := e.ExecuteOp(c, inputs[0])
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +53,7 @@ func mapOp(c *Context, e *Executor, inputs []influunt.Node, attrs map[string]int
 			argumentNode: value.Interface(),
 			indexNode:    i,
 		})
-		res, err := e.executeOp(subContext, inputs[1])
+		res, err := e.ExecuteOp(subContext, inputs[1])
 		if err != nil {
 			return nil, err
 		}

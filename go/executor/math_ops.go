@@ -17,11 +17,11 @@ func generateMathOp(typ string) func(c *Context, e *Executor, inputs []influunt.
 			return nil, errors.New("operation takes two arguments")
 		}
 
-		a, err := e.executeOp(c, inputs[0])
+		a, err := e.ExecuteOp(c, inputs[0])
 		if err != nil {
 			return nil, err
 		}
-		b, err := e.executeOp(c, inputs[1])
+		b, err := e.ExecuteOp(c, inputs[1])
 		if err != nil {
 			return nil, err
 		}
