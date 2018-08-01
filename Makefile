@@ -1,4 +1,4 @@
-build: build-shared-lib
+build: go-generate build-shared-lib
 .PHONY: build
 
 build-shared-lib:
@@ -7,6 +7,11 @@ build-shared-lib:
 
 test: test-go test-e2e
 .PHONY: test
+
+go-generate:
+	cd go
+	go generate ./...
+.PHONY: go-generate
 
 test-go:
 	go test ./...

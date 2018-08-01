@@ -1,0 +1,12 @@
+package executor
+
+import "github.com/cheekybits/genny/generic"
+
+type AType generic.Number
+type BType generic.Number
+
+func modATypeAndBType(a AType, b BType) AType {
+	return a % AType(b)
+}
+
+var _ = addMathFunc("mod", modATypeAndBType)

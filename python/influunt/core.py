@@ -53,11 +53,50 @@ class Node:
     def __radd__(self, anotherNode):
         return add(anotherNode, self)
 
+    def __sub__(self, anotherNode):
+        return sub(self, anotherNode)
+
+    def __rsub__(self, anotherNode):
+        return sub(anotherNode, self)
+
+    def __mod__(self, anotherNode):
+        return mod(self, anotherNode)
+
+    def __rmod__(self, anotherNode):
+        return mod(anotherNode, self)
+
+    def __truediv__(self, anotherNode):
+        return sub(self, anotherNode)
+
+    def __rtruediv__(self, anotherNode):
+        return sub(anotherNode, self)
+
+    def __lt__(self, anotherNode):
+        return less_than(self, anotherNode)
+
+    def __le__(self, anotherNode):
+        return less_or_equal(self, anotherNode)
+
+    def __gt__(self, anotherNode):
+        return greater_than(self, anotherNode)
+
+    def __ge__(self, anotherNode):
+        return greater_or_equal(self, anotherNode)
+
+    def __eq__(self, anotherNode):
+        return equal(self, anotherNode)
+
+    def __req__(self, anotherNode):
+        return equal(anotherNode, self)
+
     def __getitem__(self, attr):
         return get_attr(self, attr)
 
     def __getattr__(self, attr):
         return get_attr(self, attr)
+
+    def __hash__(self):
+        return hash(self._name)
         
     def get_attr(self, key):
         return get_attr(self, attr)
@@ -83,18 +122,33 @@ def map(list, fn, graph=None):
     )
     return Node(node)
     
+def generate_binary_op(type):
+    def op(a, b, graph=None):
+        if graph is None:
+            graph = Graph.default_graph
 
-def add(a, b, graph=None):
-    if graph is None:
-        graph = Graph.default_graph
+        a = ensure_node(a)
+        b = ensure_node(b)
 
-    a = ensure_node(a)
-    b = ensure_node(b)
+        return graph.add_op({
+            "type": type,
+            "inputs": [a._node, b._node]
+        })[0]
 
-    return graph.add_op({
-        "type": "Add",
-        "inputs": [a._node, b._node]
-    })[0]
+    return op
+
+
+add = generate_binary_op("Add")
+sub = generate_binary_op("Sub")
+mod =  generate_binary_op("Mod")
+mul =  generate_binary_op("Mul")
+mod =  generate_binary_op("Div")
+less_than = generate_binary_op("LessThan")
+less_or_equal = generate_binary_op("LessOrEqual")
+greater_than = generate_binary_op("GreaterThan")
+greater_or_equal = generate_binary_op("GreaterOrEqual")
+equal = generate_binary_op("Equal")
+not_equal = generate_binary_op("NotEqual")
 
 def placeholder(graph=None):
     if graph is None:
@@ -128,7 +182,10 @@ def cond(pred, a, b, graph=None):
     a = ensure_node(a)
     b = ensure_node(b)
 
-    return Node(influunt_core.op_cond(graph._graph, pred._node, a._node, b._node))
+    return graph.add_op({
+        "type": "Cond",
+        "inputs": [pred._node, a._node, b._node]
+    })[0]
 
 def parse_json(json, graph=None):
     if graph is None:
@@ -141,17 +198,7 @@ def parse_json(json, graph=None):
         "inputs": [json._node]
     })[0]
 
-def get_attr(m, key, graph=None):
-    if graph is None:
-        graph = Graph.default_graph
-
-    m = ensure_node(m)
-    key = ensure_node(key)
-
-    return graph.add_op({
-        "type": "GetAttr",
-        "inputs": [m._node, key._node]
-    })[0]
+get_attr = generate_binary_op("GetAttr")
 
 def ensure_node(n, graph=None):
     if graph is None:
@@ -160,4 +207,4 @@ def ensure_node(n, graph=None):
     if isinstance(n, Node):
         return n
     else:
-        return Node(influunt_core.op_const(graph._graph, n))
+        return const(n, graph)

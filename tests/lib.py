@@ -16,9 +16,14 @@ with influunt.Graph() as graph:
     foo = influunt.cond(True, "foo", "bar")
     bar = influunt.cond(False, lambda : "foo", lambda : "bar")
 
-    r = graph.executor().run({p: 1}, [n, mapped, foo, bar])
+    compare = p < n
+    compare2 = influunt.const(0) < influunt.const(1)
+    greaterThan = influunt.const(0) > influunt.const(1)
+    equal = n == 6
+
+    r = graph.executor().run({p: 1}, [n, mapped, foo, bar, compare, compare2, greaterThan, equal])
  
     print(r)
-    assert r == [6, [2, 4, 6], "foo", "bar"]
+    assert r == [6, [2, 4, 6], "foo", "bar", True, True, False, True]
     
 

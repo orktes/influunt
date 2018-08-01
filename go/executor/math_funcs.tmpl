@@ -1,0 +1,60 @@
+package executor
+
+import (
+	"reflect"
+	"github.com/cheekybits/genny/generic"
+)
+
+type AType generic.Number
+type BType generic.Number
+
+func addATypeAndBType(a AType, b BType) AType {
+	return a + AType(b)
+}
+
+func substractATypeAndBType(a AType, b BType) AType {
+	return a - AType(b)
+}
+
+func divATypeAndBType(a AType, b BType) AType {
+	return a / AType(b)
+}
+
+func multiplyATypeAndBType(a AType, b BType) AType {
+	return a * AType(b)
+}
+
+func lessThanATypeAndBType(a AType, b BType) bool {
+	return a < AType(b)
+}
+
+func lessOrEqualATypeAndBType(a AType, b BType) bool {
+	return a <= AType(b)
+}
+
+func greaterThanATypeAndBType(a AType, b BType) bool {
+	return a > AType(b)
+}
+
+func greaterOrEqualATypeAndBType(a AType, b BType) bool {
+	return a >= AType(b)
+}
+
+func equalATypeAndBType(a AType, b BType) bool {
+	return a == AType(b)
+}
+
+func notEqualATypeAndBType(a AType, b BType) bool {
+	return a != AType(b)
+}
+
+var _ = addMathFunc("add", addATypeAndBType)
+var _ = addMathFunc("substract", substractATypeAndBType)
+var _ = addMathFunc("div", divATypeAndBType)
+var _ = addMathFunc("mul", multiplyATypeAndBType)
+var _ = addMathFunc("lt", lessThanATypeAndBType)
+var _ = addMathFunc("lte", lessOrEqualATypeAndBType)
+var _ = addMathFunc("gt", greaterThanATypeAndBType)
+var _ = addMathFunc("gte", greaterOrEqualATypeAndBType)
+var _ = addMathFunc("eq", equalATypeAndBType)
+var _ = addMathFunc("ne", notEqualATypeAndBType)
