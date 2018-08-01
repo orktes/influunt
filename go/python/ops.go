@@ -4,9 +4,10 @@ package main
 // #include <Python.h>
 import "C"
 import (
-	"github.com/orktes/influunt/go"
 	"errors"
 	"unsafe"
+
+	"github.com/orktes/influunt/go"
 )
 
 // influunt_OpMap maps over a given list
@@ -66,11 +67,8 @@ func influunt_GraphAddOp(self, args *pyObject) *pyObject {
 	}
 
 	if inputs, ok := specMap["inputs"]; ok {
-		if inputs, ok := inputs.([]unsafe.Pointer); ok {
-			for _, ptr := range inputs {
-				opSpec.Inputs = append(opSpec.Inputs, nodeFromPointer(ptr))
-			}
-			
+		if inputs, ok := inputs.([]influunt.Node); ok {
+			opSpec.Inputs = inputs
 		}
 	}
 
@@ -91,6 +89,6 @@ func influunt_GraphAddOp(self, args *pyObject) *pyObject {
 	if err != nil {
 		panic(err)
 	}
-	
+
 	return pyRes
 }

@@ -75,6 +75,8 @@ import (
 	"fmt"
 	"reflect"
 	"unsafe"
+
+	"github.com/mattn/go-pointer"
 )
 
 type pyObject = C.PyObject
@@ -226,7 +228,7 @@ func convertPyObjectToInterface(pyObject *C.PyObject) (interface{}, error) {
 	} else if int(C.influunt_isPyUnicode(pyObject)) == 1 {
 		return C.GoString(C.influunt_stringFromPyUnicode(pyObject)), nil
 	} else if int(C.influunt_isPyCapsule(pyObject)) == 1 {
-		return capsuleToPointer(pyObject), nil
+		return pointer.Restore(capsuleToPointer(pyObject)), nil
 	} else if int(C.influunt_isPyList(pyObject)) == 1 {
 		length := int(C.PyList_Size(pyObject))
 		if length == 0 {

@@ -7,7 +7,7 @@ docker run --rm -it -v "$GOPATH":/go -w /go/src/github.com/orktes/influunt influ
 cd go/python/
 for GOOS in darwin linux windows; do
   for GOARCH in 386 amd64; do
-    mkdir -p build/sharedlib/$GOOS/$GOARCH
+    mkdir -p /go/src/github.com/orktes/influunt/build/sharedlib/$GOOS/$GOARCH
     echo Building $GOOS for $GOARCH
     go build -buildmode=c-shared -o /go/src/github.com/orktes/influunt/build/sharedlib/$GOOS/$GOARCH/influunt_core.so
   done
