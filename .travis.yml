@@ -13,8 +13,5 @@ before_install:
 - chmod +x docker-compose
 - sudo mv docker-compose /usr/local/bin
 
-install:
-  go get github.com/cheekybits/genny
-
 test:
   make test

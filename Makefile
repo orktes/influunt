@@ -1,4 +1,4 @@
-build: go-generate build-shared-lib
+build: build-shared-lib
 .PHONY: build
 
 build-shared-lib:
