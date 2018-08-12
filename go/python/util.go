@@ -64,6 +64,10 @@ func graphFromPointer(p unsafe.Pointer) *influunt.Graph {
 	return pointer.Restore(p).(*influunt.Graph)
 }
 
+func modelFromPointer(p unsafe.Pointer) *influunt.Model {
+	return pointer.Restore(p).(*influunt.Model)
+}
+
 func nodeToPointer(node influunt.Node) unsafe.Pointer {
 	return pointer.Save(node)
 }

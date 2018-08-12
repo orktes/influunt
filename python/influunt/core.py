@@ -104,6 +104,31 @@ class Node:
     def map(self, fn):
         return map(self, fn)
 
+class Model:
+    def __init__(self, model):
+        self._model = model
+        self._executor = influunt_core.new_model_executor(model)
+
+    def run(self, inputs):
+        return influunt_core.model_executor_run(self._executor, inputs)
+    
+    def run_async(self, inputs, callback):
+        return influunt_core.model_executor_run_async(self._executor, inputs, callback)
+
+def load_model(filepath):
+    return Model(influunt_core.read_model_from_file(filepath))
+
+def save_model(graph, inputs, outputs, filepath):
+    inputMap = {}
+    for key, value in inputs.items():
+        inputMap[key] = value._node
+
+    outputMap = {}
+    for key, value in outputs.items():
+        outputMap[key] = value._node
+
+    return influunt_core.write_model_to_file(graph._graph, inputMap, outputMap, filepath)
+
 def load_graph(filepath):
     return Graph(influunt_core.read_graph_from_file(filepath))
 

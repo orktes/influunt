@@ -24,3 +24,26 @@ with influunt.load_graph("test.graph") as graph:
     assert res == 356
 
 os.remove("test.graph")
+
+# Saved model
+with influunt.Graph() as graph:
+    a = influunt.placeholder()
+    b = influunt.placeholder()
+    c = a + b
+
+    influunt.save_model(
+        graph, 
+        {"a": a, "b": b}, 
+        {"c": c}, 
+        "test.model"
+    )
+
+# Now lets load the model
+model = influunt.load_model("test.model")
+res = model.run({"a": 10, "b": 20})
+
+print(res)
+
+assert res["c"] == 30
+
+os.remove("test.model")

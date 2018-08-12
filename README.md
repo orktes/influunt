@@ -24,8 +24,13 @@ with influunt.Graph() as graph:
     # Map items and return names
     names = inputItems.map(lambda item, i : item.name)
 
-    # Save graph to file
-    influunt.save_graph(graph, "example.graph")
+    # Save graph as a model and define inputs and outputs
+    influunt.save_model(
+		graph, 
+		{"input": inputItems},
+		{"values": values, "names": names}, 
+		"example.model"
+	)
 ```
 
 Load graph in go and execute
@@ -40,22 +45,21 @@ import (
 )
 
 func main() {
-	file, _ := os.Open("example.graph")
-	graph, _ := influunt.ReadGraph(file)
+	file, _ := os.Open("example.model")
+	model, _ := influunt.ReadModel(file)
 
-	input, _ := graph.NodeByName("Placeholder:0", 0)
-	names, _ := graph.NodeByName("Map:12", 0)
-	values, _ := graph.NodeByName("Map:7", 0)
-
-	exec, _ := executor.NewExecutor(graph)
-	results, _ := exec.Run(map[influunt.Node]interface{}{
-		input: []map[string]interface{}{
+	exec, _ := executor.NewModelExecutor(model)
+	results, _ := exec.Run(map[string]interface{}{
+		"input": []map[string]interface{}{
 			{"name": "foo", "value": 100},
 			{"name": "bar", "value": 200},
 		},
-	}, []influunt.Node{names, values})
+	})
 
-	fmt.Printf("%+v\n", results)
-	// [[foo bar] [101 201]]
+	fmt.Printf("%+v\n", results["names"])
+	// [foo bar]
+
+	fmt.Printf("%+v\n", results["values"])
+	// [101 201]
 }
 ```

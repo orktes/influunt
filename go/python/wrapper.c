@@ -7,6 +7,13 @@ PyObject* influunt_WriteGraphToFile(PyObject* p0, PyObject* p1);
 PyObject* influunt_GraphAddOp(PyObject* p0, PyObject* p1);
 PyObject* influunt_GraphNodeByName(PyObject* p0, PyObject* p1);
 
+PyObject* influunt_ReadModelFromFile(PyObject* p0, PyObject* p1);
+PyObject* influunt_WriteModelToFile(PyObject* p0, PyObject* p1);
+
+PyObject* influunt_NewModelExecutor(PyObject* p0, PyObject* p1);
+PyObject* influunt_ModelExecutorRun(PyObject* p0, PyObject* p1);
+PyObject* influunt_ModelExecutorRunAsync(PyObject* p0, PyObject* p1);
+
 PyObject* influunt_NodeGetName(PyObject* p0, PyObject* p1);
 
 PyObject* influunt_OpMap(PyObject* p0, PyObject* p1);
@@ -24,6 +31,14 @@ static PyMethodDef InfluuntMethods[] = {
     {"graph_add_op", influunt_GraphAddOp, METH_VARARGS, "Add operation to graph."},
     {"graph_node_by_name", influunt_GraphNodeByName, METH_VARARGS, "Return node by name and index."},
     {"node_get_name", influunt_NodeGetName, METH_O, "Return node name."},
+    
+    {"read_model_from_file", influunt_ReadModelFromFile, METH_O, "Read model from file."},
+    {"write_model_to_file", influunt_WriteModelToFile, METH_VARARGS, "Write model to file."},
+   
+    {"new_model_executor", influunt_NewModelExecutor, METH_O, "Creates a new model executor for a given graph."},
+    {"model_executor_run", influunt_ModelExecutorRun, METH_VARARGS, "Execute contained model with given input map"},
+    {"model_executor_run_async", influunt_ModelExecutorRunAsync, METH_VARARGS, "Asynchronously execute contained model with given input map"},
+  
     {"new_executor", influunt_NewExecutor, METH_O, "Creates a new executor for a given graph."},
     {"executor_run", influunt_ExecutorRun, METH_VARARGS, "Execute contained graph with given input map and output filter"},
     {"executor_run_async", influunt_ExecutorRunAsync, METH_VARARGS, "Asynchronously execute contained graph with given input map and output filter"},
