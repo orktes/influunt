@@ -1,9 +1,4 @@
-import sys
 import os
-from os.path import dirname, join
-
-sys.path.append(join(dirname(__file__), "../build/sharedlib/linux/amd64"))
-sys.path.append(join(dirname(__file__), "../python"))
 
 import influunt
 

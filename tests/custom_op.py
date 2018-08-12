@@ -1,10 +1,4 @@
-import sys
 import random
-from os.path import dirname, join
-
-sys.path.append(join(dirname(__file__), "../build/sharedlib/linux/amd64"))
-sys.path.append(join(dirname(__file__), "../python"))
-
 import influunt
 
 randint = influunt.add_operation("random/randint", random.randint)

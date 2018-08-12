@@ -8,6 +8,10 @@ build-shared-lib:
 test: test-go test-e2e
 .PHONY: test
 
+install:
+	(cd python && python3 setup.py install)
+.PHONY: install
+
 go-generate:
 	cd go
 	go generate ./...
@@ -23,4 +27,7 @@ test-e2e:
 
 clean:
 	rm -Rf build
+	rm -Rf python/build
+	rm -Rf python/dist
+	rm -Rf python/influunt.egg-info
 .PHONY: clean 

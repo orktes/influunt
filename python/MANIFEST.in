@@ -1,0 +1,7 @@
+include *.md
+include influunt/VERSION
+
+global-exclude *.o
+global-exclude *.a
+global-exclude *.pyo
+global-exclude *.pyc

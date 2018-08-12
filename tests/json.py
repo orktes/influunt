@@ -1,9 +1,3 @@
-import sys
-from os.path import dirname, join
-
-sys.path.append(join(dirname(__file__), "../build/sharedlib/linux/amd64"))
-sys.path.append(join(dirname(__file__), "../python"))
-
 import influunt
 
 with influunt.Graph() as graph:
