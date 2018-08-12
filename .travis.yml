@@ -8,13 +8,13 @@ go:
 - "1.10"
 
 before_install:
-- apt-get install cmake clang bison flex xz-utils libfuse-dev libudev-dev pkg-config libc6-dev:i386 linux-headers-generic gcc-multilib libcap2-bin libcairo2-dev libgl1-mesa-dev libtiff5-dev libfreetype6-dev libfreetype6-dev:i386 git libelf-dev libxml2-dev libegl1-mesa-dev libfontconfig1-dev
+- sudo apt-get install cmake clang bison flex xz-utils libfuse-dev libudev-dev pkg-config libc6-dev:i386 linux-headers-generic gcc-multilib libcap2-bin libcairo2-dev libgl1-mesa-dev libtiff5-dev libfreetype6-dev libfreetype6-dev:i386 git libelf-dev libxml2-dev libegl1-mesa-dev libfontconfig1-dev
 - git clone --recursive https://github.com/darlinghq/darling.git
 - cd darling
 - mkdir build && cd build
 - cmake ..
 - make
-- make install
+- sudo make install
 - make lkm
 - sudo make lkm_install
 - sudo rm /usr/local/bin/docker-compose
